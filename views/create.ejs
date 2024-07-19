@@ -1,0 +1,32 @@
+<%- include('./partials/header.ejs') %>
+
+<div class="createHisaab w-full h-[70%] flex items-center justify-center">
+
+    <div class=" w-1/2 h-full rounded-md border-2 border-blue-950  p-5">
+        <h1 class="text-xl mb-4">Create New Hisaab</h1>
+        <form action="/hisaab/create" class="flex flex-col gap-2 " method="post">
+            <input class="block px-3 py-2 bg-zinc-800 rounded" type="text" placeholder="Hisaab...." name="title" >
+            <textarea class="block px-4 py-3 h-[10vw] bg-zinc-800 rounded resize-none" name="description" placeholder="Daal, Aata, Cheeni"></textarea>
+            <div class="flex gap-2">
+            <input type="checkbox" name="encrypted"  >Encrypt this file
+            </div>
+            <input class="block px-3 py-2 bg-zinc-800 rounded" type="password" name="passcode" placeholder="passcode">
+            <div class="flex gap-2">
+                <input type="checkbox" name="shareable">Shareable file?
+
+            </div>
+            <div class="flex gap-2">
+            <input type="checkbox" name="editpermissions" >Edit permissions
+
+            </div>
+
+            <input class="bg-blue-600 px-3 py-2 rounded mt-4" type="submit" value="Create New Hisaab">
+    
+        </form>
+
+
+    </div>
+
+</div>
+
+<%- include('./partials/footer.ejs') %>
