@@ -13,7 +13,7 @@ const hisaabRouter = require('./routes/hisaab-router')
 const db = require('./config/mongoose-connection')
 
 app.use(session({
-    secret: 'your_secret_key', // replace with a secure secret key
+    secret: 'secret_key', // replace with a secure secret key
     resave: false,
     saveUninitialized: true
   }));
