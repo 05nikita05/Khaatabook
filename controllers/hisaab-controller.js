@@ -50,9 +50,9 @@ module.exports.viewHisaabController = async function(req,res){
 }
 module.exports.viewVerifiedHisaabController = async function(req,res){
     const id = req.params._id;
-    const hisaab = await hisaabModel.findOne({_id:id});
+    const hisaab = await hisaabModel.findOne({_id:id,user: req.user._id});
 
-    if(hisaab.passcode !== req.body.passcode) return res.redirect('/profile')
+    if(!hisaab || hisaab.passcode !== req.body.passcode) return res.redirect('/profile')
 
     return res.render('hisaab',{hisaab})
 }
@@ -68,8 +68,11 @@ module.exports.deleteHisaabController = async function(req,res){
     await hisaabModel.deleteOne({_id:id})
 
     let user = await userModel.findOne({email:req.user.email})
-    let deleted = user.hisaab.indexOf(createdHisaab._id);
-    hisaab.splice(deleted,1);
+    let deleted = user.hisaab.indexOf(hisaab._id);
+    // user.hisaab.splice(deleted,1);
+    if (deleted !== -1) {
+        user.hisaab.splice(deleted, 1); // Modify `user.hisaab`, not `hisaab`
+    }
     await user.save();
     return res.redirect('/profile')
 }
@@ -100,3 +103,28 @@ module.exports.editHisaabController = async function(req,res){
     return res.redirect('/profile')
     
 }
+
+module.exports.shareHisaabController = async function(req, res) {
+    try {
+        const id = req.params._id;
+        const hisaab = await hisaabModel.findOne({ _id: id });
+
+        if (!hisaab) {
+            req.flash('error', "Hisaab not found or you don't have permission to share it");
+            return res.redirect('/profile');
+        }
+
+        if (!hisaab.shareable) {
+            req.flash('error', "This hisaab cannot be shared");
+            return res.redirect('/profile');
+        }
+
+        // Redirect to the same hisaab page with a success flag
+        return res.redirect(`/hisaab/view/${id}?copyLink=true`);
+
+    } catch (err) {
+        console.error(err);
+        req.flash('error', 'Something went wrong while generating the shareable link');
+        return res.redirect('/profile');
+    }
+};

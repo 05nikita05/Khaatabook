@@ -1,53 +1,59 @@
 <%- include('./partials/header.ejs') %>
 
-
-    <div class="max-w-2xl mx-auto p-6 bg-zinc-300 rounded-lg mt-10">
-        <div
-            class="absolute copieddiv hidden top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-blue-500 rounded-md">
-            <h3 class="text-blue-200 text-xl bg-blue-500">
-                link copied
-            </h3>
-        </div>
-        <div class="flex justify-between items-center mb-4 bg-zinc-300">
-            <h1 class="text-2xl font-bold bg-zinc-300 text-black">Khaatabook</h1>
-            <div class="flex space-x-4 bg-zinc-300 text-black">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">Encrypted</button>
-                <button class="sharebtn px-4 py-2 rounded flex items-center space-x-2 ">
-                    <span class="bg-zinc-300 text-black " id="copyURL">Share as a link</span>
-                </button>
-                <a href="/hisaab/delete/<%= hisaab._id %>" class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
-                <a href="/hisaab/edit/<%= hisaab._id %>" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
-            </div>
-        </div>
-        <div class="text-gray-900 bg-zinc-300 mb-6">Created on  <%= hisaab.createdAt.getDate() %> - <%=  hisaab.createdAt.getMonth() %> - <%= hisaab.createdAt.getFullYear() %></div>
-        <h2 class="text-xl font-semibold mb-2 bg-zinc-300 text-gray-900"><%= hisaab.title %></h2>
-        <p class="text-gray-900 bg-zinc-300"><%= hisaab.description %></p>
+<div class="max-w-2xl mx-auto p-6  bg-zinc-300 rounded-lg mt-10 ">
+    <div class="absolute copieddiv hidden top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-blue-500 rounded-md">
+        <h3 class="text-blue-200 text-xl bg-blue-500">link copied</h3>
     </div>
+    <div class="flex justify-between items-center mb-4 bg-zinc-300 ">
+        <h1 class="text-xl sm:text-2xl font-bold bg-zinc-300 text-black">Khaatabook</h1>
+        <div class="flex flex-col gap-2 space-x-4 bg-zinc-300 text-black sm:flex-row">
+            <% if(hisaab.isEncrypted) { %>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded">Encrypted</button>
+            <% } %>
+            <% if(hisaab.shareable) { %>
+                <a href="/hisaab/view/<%= hisaab._id%>/share" class="sharebtn px-4 py-2 rounded flex items-center space-x-2 bg-zinc-300 active:bg-zinc-500">
+                    <span class="bg-zinc-300 text-black active:bg-zinc-500" id="copyURL">Share as a link</span>
+                </a>
+            <% } else { %>
+                <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Cannot Share</button>
+            <% } %>
+            <a href="/hisaab/delete/<%= hisaab._id %>" class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+            <% if(hisaab.editpermissions) { %>
+                <a href="/hisaab/edit/<%= hisaab._id %>" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
+            <% } %>
+        </div>
+    </div>
+    <div class="text-gray-900 bg-zinc-300 mb-2 sm:mb-6">Created on  <%= hisaab.createdAt.getDate() %> - <%=  hisaab.createdAt.getMonth() + 1 %> - <%= hisaab.createdAt.getFullYear() %></div>
+    <h2 class="text-xl font-semibold mb-5 sm:mb-2 bg-zinc-300 text-gray-900"><%= hisaab.title %></h2>
+    <p class="text-gray-900 bg-zinc-300"><%= hisaab.description %></p>
+</div>
 
+<script>
+    document.querySelector(".sharebtn").addEventListener("click", function (e) {
+    e.preventDefault(); // Prevent the form from submitting
 
-    <script>
-        var timer;
-        if(!hisaab.shareable) req.flash('error',"can't be shared")
-        else{
-        const sharebtn = document.querySelector(".sharebtn");
-        sharebtn.addEventListener("click", function (e) {
-            clearTimeout(timer);
-
-            document.querySelector(".copieddiv")
-                .classList.remove("hidden");
-
+    fetch('/hisaab/share/<%= hisaab._id %>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ shareable: true })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Show the copied div and copy the link to clipboard
+            document.querySelector(".copieddiv").classList.remove("hidden");
             timer = setTimeout(function () {
-                document.querySelector(".copieddiv")
-                    .classList.add("hidden");
-            }, 3000)
-        })
-
-         document.querySelector("#copyURL").addEventListener("click",{
-            function(event){
-                navigator.clipboard.writeText(window.location.href)
-            }
-         })
+                document.querySelector(".copieddiv").classList.add("hidden");
+            }, 3000);
+            navigator.clipboard.writeText(window.location.href);
         }
-    </script>
+    })
+    .catch(error => {
+        console.error('Error sharing the link:', error);
+    });
+});
 
-    <%- include('./partials/footer.ejs') %>
+</script>
+
+<%- include('./partials/footer.ejs') %>
