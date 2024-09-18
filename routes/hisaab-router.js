@@ -13,7 +13,7 @@ router.get('/delete/:_id',isLoggedIn,deleteHisaabController);
 router.get('/edit/:_id',isLoggedIn,editController);
 router.post('/edit/:_id',isLoggedIn,editHisaabController)
 
-router.post('/share/:_id', shareHisaabController);
+// router.post('/share/:_id', shareHisaabController);
 
 
 
