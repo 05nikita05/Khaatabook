@@ -1,5 +1,6 @@
-const express = require("express");
+const express = require("express")
 const session = require('express-session')
+const MongoDBStore = require('connect-mongodb-session')(session);
 const flash = require('connect-flash')
 const app = express();
 const path = require('path');
@@ -12,10 +13,16 @@ const indexRouter = require('./routes/index-router')
 const hisaabRouter = require('./routes/hisaab-router')
 const db = require('./config/mongoose-connection')
 
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/your-database',
+  collection: 'sessions'
+});
+
 app.use(session({
     secret: 'secret_key', // replace with a secure secret key
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store:store
   }));
   app.use(flash());
   
