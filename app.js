@@ -14,12 +14,12 @@ const hisaabRouter = require('./routes/hisaab-router')
 const db = require('./config/mongoose-connection')
 
 const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/your-database',
+  uri: process.env.MONGO_DB_URI,
   collection: 'sessions'
 });
 
 app.use(session({
-    secret: 'secret_key', // replace with a secure secret key
+    secret: process.env.JWT_KEY, // replace with a secure secret key
     resave: false,
     saveUninitialized: true,
     store:store
