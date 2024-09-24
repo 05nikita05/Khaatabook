@@ -22,7 +22,11 @@ module.exports.registerController=async function(req,res){
 
    try{
     let user = await userModel.findOne({email});
-    if(user) return res.send("You already have an account, please login");
+    if(user){
+        req.flash("error","already have an account");
+        return res.redirect('/register')
+    }
+
 
     let salt = await bcrypt.genSalt(10);
     let hashed = await bcrypt.hash(password,salt)
@@ -48,10 +52,18 @@ module.exports.loginController= async function(req,res){
     let {email,password}=req.body;
 
     let user = await userModel.findOne({email}).select("+password");
-    if(!user) return res.send("you don't have an account")
+    if(!user){
+        req.flash("error","register yourself");
+        return res.redirect('/register')
+    }
+
     
     let result =  await bcrypt.compare(password,user.password);
-    if(!result) return res.send("you have entered wrong credentials");
+    if(!result) {
+        req.flash("error","incorrect credentials");
+        return res.redirect('/login')
+    }
+
 
     let token = jwt.sign({id:user._id,email:user.email},process.env.JWT_KEY)
     
