@@ -8,18 +8,18 @@
         <h1 class="text-xl sm:text-2xl font-bold bg-zinc-300 hidden sm:block  text-black">Khaatabook</h1>
         <div class=" gap-2 bg-zinc-300 text-black flex flex-row">
             <% if(hisaab.isEncrypted) { %>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">Encrypted</button>
+                <button class="bg-blue-500 text-white px-2 py-2 rounded">Encrypted</button>
             <% } %>
             <% if(hisaab.shareable) { %>
                 <a href="/hisaab/view/<%= hisaab._id%>/share" class="sharebtn p-2 rounded flex items-center bg-zinc-300 active:bg-zinc-500">
                     <span class="bg-zinc-300 text-black active:bg-zinc-500" id="copyURL">Share as a link</span>
                 </a>
             <% } else { %>
-                <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Cannot Share</button>
+                <button class="bg-gray-400 text-white px-2 py-2 rounded cursor-not-allowed" disabled>Cannot Share</button>
             <% } %>
-            <a href="/hisaab/delete/<%= hisaab._id %>" class="bg-red-500 text-white px-4 py-2 rounded">Delete</a>
+            <a href="/hisaab/delete/<%= hisaab._id %>" class="bg-red-500 text-white px-2 py-2 rounded">Delete</a>
             <% if(hisaab.editpermissions) { %>
-                <a href="/hisaab/edit/<%= hisaab._id %>" class="bg-yellow-400 text-white px-4 py-2 rounded">Edit</a>
+                <a href="/hisaab/edit/<%= hisaab._id %>" class="bg-yellow-400 text-white px-2 py-2 rounded">Edit</a>
             <% } else { %>
                 <button class="bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed" disabled>Cannot Edit</button>
             <% } %>
