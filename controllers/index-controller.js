@@ -16,7 +16,7 @@ module.exports.registerController=async function(req,res){
     let {email,username,name,password} = req.body;
 
     if(!email || !username || !name || !password){
-        req.flash("error","All fields are required.")
+        // req.flash("error","All fields are required.")
         return res.redirect('/register')
     }
 

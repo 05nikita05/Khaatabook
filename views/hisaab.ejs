@@ -1,17 +1,17 @@
 <%- include('./partials/header.ejs') %>
 
-<div class="max-w-2xl mx-auto p-6  bg-zinc-300 rounded-lg mt-10 ">
+<div class="max-w-2xl mx-auto w-[80%] p-6 bg-zinc-300 rounded-lg mt-10 ">
     <div  class="absolute copieddiv hidden top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 px-3 py-2 bg-blue-500 rounded-md">
         <h3 class="text-blue-200 text-xl bg-blue-500">link copied</h3>
     </div>
-    <div class="flex justify-between items-center mb-4 bg-zinc-300 ">
-        <h1 class="text-xl sm:text-2xl font-bold bg-zinc-300 text-black">Khaatabook</h1>
-        <div class="flex flex-col gap-2 space-x-4 bg-zinc-300 text-black sm:flex-row">
+    <div class="flex justify-between  mb-4 bg-zinc-300 ">
+        <h1 class="text-xl sm:text-2xl font-bold bg-zinc-300 hidden sm:block  text-black">Khaatabook</h1>
+        <div class=" gap-2 bg-zinc-300 text-black flex flex-row">
             <% if(hisaab.isEncrypted) { %>
                 <button class="bg-blue-500 text-white px-4 py-2 rounded">Encrypted</button>
             <% } %>
             <% if(hisaab.shareable) { %>
-                <a href="/hisaab/view/<%= hisaab._id%>/share" class="sharebtn px-4 py-2 rounded flex items-center space-x-2 bg-zinc-300 active:bg-zinc-500">
+                <a href="/hisaab/view/<%= hisaab._id%>/share" class="sharebtn p-2 rounded flex items-center bg-zinc-300 active:bg-zinc-500">
                     <span class="bg-zinc-300 text-black active:bg-zinc-500" id="copyURL">Share as a link</span>
                 </a>
             <% } else { %>

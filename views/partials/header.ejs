@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="navbar flex justify-between w-full px-20 py-10">
+    <div class="navbar flex justify-between w-full px-10 py-10">
         <a href="/" class="text-2xl" >Khaatabook</a>
         <% var error=typeof error==='undefined' ? "" : error %>
     <% if(error.length> 0){ %>
@@ -23,11 +23,28 @@
     <% } %>
         <% var loggedin= typeof loggedin!=='undefined' ? loggedin : true %>
         <% if(loggedin){ %>
-            <div class="links flex gap-4">
-                <a href="/">Home</a>
-                <a href="/hisaab/create">Create new hisaab</a>
-                <a class="text-red-500" href="/logout">Logout</a>
+          <div class="links hidden sm:flex gap-4">
+            <a href="/">Home</a>
+            <a href="/hisaab/create">Create new hisaab</a>
+            <a class="text-red-500" href="/logout">Logout</a>
+        </div>
+        
+        <!-- Dropdown Menu for small screens -->
+        <div class="sm:hidden">
+            <!-- Burger Icon -->
+            <button id="menu-toggle" class="text-2xl">
+                <i id="menu-icon" class="ri-menu-line"></i> <!-- You can use any icon here -->
+                <i class="ri-close-line hidden" id="close-icon"></i> 
+
+            </button>
+            
+            <!-- Dropdown Content -->
+            <div id="dropdown-content" class="hidden absolute right-0 bg-white shadow-md z-40  flex-col gap-2 mt-2 text-center">
+              <a href="/" class="block px-2 py-2" >Home</a>
+                <a href="/hisaab/create" class="block px-2 py-2 ">Create new <br> hisaab</a>
+                <a href="/logout" class="block px-2 py-2 text-red-500">Logout</a>
             </div>
+        </div>
 
      <%   } %>
           
@@ -42,6 +59,19 @@
         if (flashSuccess) {
           flashSuccess.style.display = 'none';
         }
-      }, 5000); </script>
+      }, 5000);
+      document.getElementById("menu-toggle").addEventListener("click", function() {
+        const dropdown = document.getElementById("dropdown-content");
+        const menuIcon = document.getElementById("menu-icon");
+        const closeIcon = document.getElementById("close-icon");
+
+        // Toggle hidden class for dropdown
+        dropdown.classList.toggle("hidden");
+        
+        // Toggle visibility of the icons
+        menuIcon.classList.toggle("hidden");
+        closeIcon.classList.toggle("hidden");
+    });
+      </script>
 
         
